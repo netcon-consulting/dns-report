@@ -1,0 +1,9 @@
+function dns()
+{
+domainlist=$1
+if [ "$#" -le "0" ]; then
+	echo "Domainlist argument required"
+  else
+	( printf "DOMAIN SOA EMAIL SERIAL REFRESH RETRY EXPIRE TTL PRIO MX PRIO MX\n" ; xargs -n1 -I_domain -- sh -c 'echo "_domain" $(dig +short soa _domain) $(dig +short mx _domain)' < "$domainlist") | column -t
+fi
+}
